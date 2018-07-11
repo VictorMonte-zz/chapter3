@@ -13,6 +13,9 @@ class CustomerController{
     @Autowired
     lateinit var customers : ConcurrentHashMap<Int, Customer>
 
+    @RequestMapping(value = "/customers", method = [(RequestMethod.GET)])
+    fun getCustomers() = customers.toList()
+
     @RequestMapping(value = "/customer/{id}", method =[(RequestMethod.GET)])
     fun getCustomer(@PathVariable id : Int) = customers[id]
 }
