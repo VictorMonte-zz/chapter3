@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.ConcurrentHashMap
+import javax.swing.text.html.parser.Entity
 
 @RestController
 class CustomerController{
@@ -24,12 +25,28 @@ class CustomerController{
     }
 
     @PostMapping(value = "/customer/")
-    fun createCustomer(@RequestBody customer : Customer) = ResponseEntity(customerService.createCustomer(customer), HttpStatus.CREATED)
+    fun createCustomer(@RequestBody customer : Customer) : ResponseEntity<Unit?>{
+        customerService.createCustomer(customer)
+        return ResponseEntity<Unit?>(null, HttpStatus.OK)
+    }
 
     @DeleteMapping(value = "/customer/{id}")
-    fun deleteCustomer(@PathVariable id : Int) = ResponseEntity(customerService.deleteCustomer(id), HttpStatus.OK)
+    fun deleteCustomer(@PathVariable id : Int) : ResponseEntity<Unit>{
+        var status = HttpStatus.NOT_FOUND
+        if(customerService.getCustomer(id) != null){
+            customerService.deleteCustomer(id)
+            status = HttpStatus.OK
+        }
+        return ResponseEntity(Unit, status)
+    }
 
     @PutMapping(value = "/customers/{id}")
-    fun updateCustomer(@PathVariable id : Int, @RequestBody customer: Customer) =
-            ResponseEntity(customerService.updateCustomer(id, customer), HttpStatus.OK)
+    fun updateCustomer(@PathVariable id : Int, @RequestBody customer: Customer) : ResponseEntity<Unit>{
+        var status = HttpStatus.NOT_FOUND
+        if(customerService.getCustomer(id) != null){
+            customerService.updateCustomer(id, customer)
+            status = HttpStatus.ACCEPTED
+        }
+        return ResponseEntity(Unit, status)
+    }
 }
