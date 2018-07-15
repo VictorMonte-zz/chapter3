@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentHashMap
 class CustomerServiceImpl : CustomerService{
 
     companion object {
-        val initialCustomers = arrayOf(Customer(1, "Kotlin"),
-                Customer(2, "Spring"),
-                Customer(3, "Microservices"))
+        val initialCustomers = arrayOf(Customer(1, "Kotlin", Telephone("+44", "2345342312")),
+                Customer(2, "Spring", Telephone("+33", "12345678")),
+                Customer(3, "Microservices", Telephone("+45", "453215465")))
     }
 
     private val customers = ConcurrentHashMap<Int, Customer>(initialCustomers.associateBy(Customer::id))
